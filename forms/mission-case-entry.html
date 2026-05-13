@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mission Case Entry</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial,sans-serif;background:#eef3f8;padding:30px;}
+.card{background:white;padding:30px;border-radius:14px;max-width:900px;margin:auto;}
+input,textarea{width:100%;padding:12px;margin-bottom:14px;border-radius:10px;border:1px solid #ccc;}
+button{padding:14px 18px;background:#1565c0;color:white;border:none;border-radius:10px;font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Mission Case Entry</h1>
 
+<form id="missionForm">
+
+<input type="text" name="caseNumber" placeholder="Case Number">
+<input type="text" name="name" placeholder="Name">
+<input type="text" name="destination" placeholder="Destination">
+<textarea name="narrative" placeholder="Narrative"></textarea>
+
+<button type="submit">Submit Case</button>
+
+</form>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+document.getElementById("missionForm").addEventListener("submit", async (e) => {
+
+e.preventDefault();
+
+const formData = Object.fromEntries(new FormData(e.target).entries());
+
+const response = await fetch(
+"https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
+{
+method:"POST",
+body:JSON.stringify(formData)
+}
+);
+
+const text = await response.text();
+
+document.getElementById("result").innerHTML =
+"<strong>Submitted!</strong><br>" + text;
+
+});
+</script>
+</body>
+</html>
