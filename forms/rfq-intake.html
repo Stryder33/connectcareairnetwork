@@ -25,9 +25,9 @@ body {
 }
 
 .header {
-  background: linear-gradient(135deg, #111827, #334155);
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: white;
-  padding: 26px;
+  padding: 28px;
   border-radius: 18px;
   margin-bottom: 24px;
   box-shadow: 0 8px 20px rgba(0,0,0,.15);
@@ -35,7 +35,7 @@ body {
 
 .header h1 {
   margin: 0;
-  font-size: 30px;
+  font-size: 31px;
 }
 
 .header p {
@@ -85,6 +85,15 @@ textarea {
   border-radius: 12px;
   background: #f8fafc;
   font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
 }
 
 textarea {
@@ -206,12 +215,12 @@ button {
       <div class="grid">
         <div>
           <label>Case Number <span class="required">*</span></label>
-          <input id="caseNumber" required>
+          <input id="caseNumber" required placeholder="Example: RFQ-2026-001">
         </div>
 
         <div class="checkbox-card">
           <input type="checkbox" id="authorized" required>
-          <label for="authorized">I certify authorization to request this quote.</label>
+          <label for="authorized">I certify that I am authorized to request this quote. <span class="required">*</span></label>
         </div>
       </div>
     </div>
@@ -231,7 +240,7 @@ button {
         </div>
 
         <div>
-          <label>Coordinator Phone <span class="required">*</span></label>
+          <label>Coordinator Phone Number <span class="required">*</span></label>
           <input id="coordinatorPhone" required>
         </div>
 
@@ -267,13 +276,13 @@ button {
         </div>
 
         <div>
-          <label>Medical Report Link</label>
-          <input id="medicalReportLink">
+          <label>Medical Report Upload Link</label>
+          <input id="medicalReportLink" placeholder="Paste Google Drive link">
         </div>
 
         <div class="full">
-          <label>Patient Narrative</label>
-          <textarea id="patientNarrative"></textarea>
+          <label>Patient Narrative / Medical Summary</label>
+          <textarea id="patientNarrative" placeholder="Enter clinical narrative or summary if no report is uploaded."></textarea>
         </div>
       </div>
     </div>
@@ -301,13 +310,13 @@ button {
         </div>
 
         <div>
-          <label>Originating ICAO <span class="required">*</span></label>
-          <input id="originatingICAO" maxlength="4" required>
+          <label>Originating ICAO Airport Code <span class="required">*</span></label>
+          <input id="originatingICAO" maxlength="4" required placeholder="Example: KBDG">
         </div>
 
         <div class="full">
           <label>Patient Location Details <span class="required">*</span></label>
-          <textarea id="patientLocationDetails" required></textarea>
+          <textarea id="patientLocationDetails" required placeholder="Hospital name, room number, address, contact details, etc."></textarea>
         </div>
       </div>
     </div>
@@ -317,12 +326,12 @@ button {
 
       <div class="grid">
         <div>
-          <label>Scheduled Departure <span class="required">*</span></label>
+          <label>Scheduled Departure Date/Time <span class="required">*</span></label>
           <input id="scheduledDeparture" type="datetime-local" required>
         </div>
 
         <div>
-          <label>Flexible Departure <span class="required">*</span></label>
+          <label>Flexible Departure Time? <span class="required">*</span></label>
           <select id="flexibleDeparture" required>
             <option value="">Select</option>
             <option>Yes</option>
@@ -331,7 +340,7 @@ button {
         </div>
 
         <div>
-          <label>Ground Transport Required <span class="required">*</span></label>
+          <label>Ground Transport Required at All Legs? <span class="required">*</span></label>
           <select id="groundTransportRequired" required>
             <option value="">Select</option>
             <option>Yes</option>
@@ -341,28 +350,28 @@ button {
 
         <div class="full">
           <label>Flexibility Notes</label>
-          <textarea id="flexibilityNotes"></textarea>
+          <textarea id="flexibilityNotes" placeholder="Explain flexibility window, preferred times, restrictions, etc."></textarea>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <h2>Equipment & Documents</h2>
+      <h2>Medical Equipment & Travel Documents</h2>
 
       <div class="grid">
         <div class="full">
-          <label>Additional Medical Equipment</label>
-          <textarea id="additionalMedicalEquipment"></textarea>
+          <label>Additional Medical Equipment Required</label>
+          <textarea id="additionalMedicalEquipment" placeholder="Ventilator, oxygen, isolette, bariatric equipment, specialty medications, etc."></textarea>
         </div>
 
         <div>
-          <label>Passport Link</label>
-          <input id="passportLink">
+          <label>Passport Upload Link</label>
+          <input id="passportLink" placeholder="Paste Google Drive link">
         </div>
 
         <div>
-          <label>Visa Link</label>
-          <input id="visaLink">
+          <label>Visa Upload Link</label>
+          <input id="visaLink" placeholder="Paste Google Drive link">
         </div>
       </div>
     </div>
@@ -382,7 +391,7 @@ button {
 
         <div id="otherBox">
           <label>Other Quote Validity Notes <span class="required">*</span></label>
-          <input id="otherQuoteValidityNotes">
+          <input id="otherQuoteValidityNotes" placeholder="Explain requested validity period">
         </div>
       </div>
     </div>
@@ -393,7 +402,7 @@ button {
       <div class="grid">
         <div>
           <label>Requestor Signature <span class="required">*</span></label>
-          <input id="requestorSignature" required>
+          <input id="requestorSignature" required placeholder="Type full legal name">
         </div>
 
         <div>
@@ -419,19 +428,10 @@ button {
 
 </div>
 
-<iframe name="submitFrame" id="submitFrame" style="display:none;"></iframe>
-
-<form
-  id="appsScriptSubmitForm"
-  action="https://script.google.com/macros/s/AKfycbwJnBTnOVZLaVupdQ62qYqIKsQbxUcPGOD0bPXhBzc/dev"
-  method="POST"
-  target="submitFrame"
-  style="display:none;"
->
-  <input type="hidden" name="payload" id="payload">
-</form>
-
 <script>
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycby9xlgcIMlunDMGnS3vkEO0wiMUIkaQsSWKYdMGDK3dcRzHHCVpni0jCqqxC4Kc7Ld8/exec";
+
 function toggleOther() {
   const val = document.getElementById("quoteValidity").value;
   const box = document.getElementById("otherBox");
@@ -464,7 +464,7 @@ function resetButton() {
   submitBtn.textContent = "Submit RFQ";
 }
 
-document.getElementById("rfqForm").addEventListener("submit", function(e) {
+document.getElementById("rfqForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const submitBtn = document.getElementById("submitBtn");
@@ -504,21 +504,48 @@ document.getElementById("rfqForm").addEventListener("submit", function(e) {
     notes: getValue("notes")
   };
 
-  document.getElementById("payload").value = JSON.stringify(formData);
-  document.getElementById("appsScriptSubmitForm").submit();
+  try {
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify(formData)
+    });
 
-  setTimeout(function() {
-    showStatus("RFQ sent. Check the Google Sheet.", "success");
+    const text = await response.text();
+
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch (err) {
+      result = {
+        success: true,
+        message: text || "RFQ submitted."
+      };
+    }
+
+    if (result.success === false) {
+      throw new Error(result.message || "Submission failed.");
+    }
+
+    showStatus(
+      (result.message || "RFQ submitted successfully.") +
+      (result.row ? " Row " + result.row + "." : ""),
+      "success"
+    );
 
     document.getElementById("rfqForm").reset();
     toggleOther();
-    resetButton();
 
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
-  }, 2500);
+
+  } catch (error) {
+    showStatus("ERROR: " + error.message, "error");
+  }
+
+  resetButton();
 });
 
 function resetForm() {
