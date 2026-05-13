@@ -71,13 +71,16 @@
       display: block;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 12px;
       border-radius: var(--radius);
       border: 1px solid #ccc;
       font-size: 15px;
       transition: var(--transition);
+      box-sizing: border-box;
     }
 
     select {
@@ -85,7 +88,9 @@
       cursor: pointer;
     }
 
-    input:focus, textarea:focus, select:focus {
+    input:focus,
+    textarea:focus,
+    select:focus {
       border-color: var(--primary);
       outline: none;
       box-shadow: 0 0 0 3px rgba(25,118,210,0.2);
@@ -127,8 +132,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     #riskPreview {
@@ -139,6 +151,12 @@
       background: #fafafa;
       border-left: 5px solid #ccc;
       margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
     }
   </style>
 </head>
@@ -152,13 +170,17 @@
 <div id="app">
 
   <div class="card">
+
     <h2>Mission Details</h2>
 
-    <div id="riskPreview">Risk Score: 0 (Low)</div>
+    <div id="riskPreview">
+      Risk Score: 0 (Low)
+    </div>
 
     <form id="missionForm">
 
       <div class="grid">
+
         <div>
           <label>Case Number</label>
           <input type="text" name="caseNumber" required>
@@ -183,6 +205,7 @@
           <label>Route</label>
           <input type="text" name="route">
         </div>
+
       </div>
 
       <h2>Risk Factors</h2>
@@ -268,15 +291,23 @@
             <option value="3">3 - Poor / Lost Comms</option>
           </select>
         </div>
+
       </div>
 
+      <br>
+
       <label>Narrative</label>
+
       <textarea name="narrative" rows="4"></textarea>
 
-      <button id="submitBtn" type="submit">Submit Case</button>
+      <button id="submitBtn" type="submit">
+        Submit Case
+      </button>
+
     </form>
 
     <div id="result"></div>
+
   </div>
 
 </div>
@@ -286,63 +317,134 @@
 </footer>
 
 <script>
-  const riskInputs = document.querySelectorAll("select");
-  const riskPreview = document.getElementById("riskPreview");
+
+  const riskInputs =
+    document.querySelectorAll("select");
+
+  const riskPreview =
+    document.getElementById("riskPreview");
 
   function updateRiskPreview() {
+
     let score = 0;
-    riskInputs.forEach(i => score += Number(i.value || 0));
+
+    riskInputs.forEach(i => {
+      score += Number(i.value || 0);
+    });
 
     let level = "Low";
-    if (score >= 9) level = "High";
-    else if (score >= 5) level = "Moderate";
 
-    riskPreview.textContent = `Risk Score: ${score} (${level})`;
-    riskPreview.style.borderLeftColor =
-      level === "High" ? "#d32f2f" :
-      level === "Moderate" ? "#f9a825" :
-      "#388e3c";
-  }
-
-  riskInputs.forEach(i => i.addEventListener("change", updateRiskPreview));
-
-  document.getElementById("missionForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
-
-    const formData = Object.fromEntries(new FormData(e.target).entries());
-
-    if (localStorage.getItem("lastCase") === formData.caseNumber) {
-      const confirmDup = confirm("This case number was just submitted. Submit again?");
-      if (!confirmDup) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Case";
-        return;
-      }
+    if (score >= 9) {
+      level = "High";
+    } else if (score >= 5) {
+      level = "Moderate";
     }
 
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
-      {
-        method: "POST",
-        body: JSON.stringify(formData)
+    riskPreview.textContent =
+      `Risk Score: ${score} (${level})`;
+
+    riskPreview.style.borderLeftColor =
+      level === "High"
+        ? "#d32f2f"
+        : level === "Moderate"
+        ? "#f9a825"
+        : "#388e3c";
+  }
+
+  riskInputs.forEach(i =>
+    i.addEventListener("change", updateRiskPreview)
+  );
+
+  document
+    .getElementById("missionForm")
+    .addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      const submitBtn =
+        document.getElementById("submitBtn");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      const form = e.target;
+
+      const formData =
+        Object.fromEntries(
+          new FormData(form).entries()
+        );
+
+      if (
+        localStorage.getItem("lastCase") ===
+        formData.caseNumber
+      ) {
+
+        const confirmDup = confirm(
+          "This case number was just submitted. Submit again?"
+        );
+
+        if (!confirmDup) {
+
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Case";
+
+          return;
+        }
       }
-    );
 
-    const text = await response.text();
+      try {
 
-    localStorage.setItem("lastCase", formData.caseNumber);
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
+          {
+            method: "POST",
+            body: JSON.stringify(formData)
+          }
+        );
 
-    const resultBox = document.getElementById("result");
-    resultBox.style.display = "block";
-    resultBox.innerHTML = "<strong>✔ Submitted!</strong><br>" + text;
+        const text = await response.text();
 
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Case";
-  });
+        localStorage.setItem(
+          "lastCase",
+          formData.caseNumber
+        );
+
+        const resultBox =
+          document.getElementById("result");
+
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML =
+          "<strong>✔ Submitted!</strong><br>" + text;
+
+        form.reset();
+
+        updateRiskPreview();
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      } catch (error) {
+
+        const resultBox =
+          document.getElementById("result");
+
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML =
+          "<strong>Submission Error:</strong><br>" +
+          error.message;
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Case";
+
+    });
+
+  updateRiskPreview();
+
 </script>
 
 </body>
