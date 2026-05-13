@@ -1,15 +1,15 @@
-# index.html
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Connect Care Air Network Portal</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
 margin:0;
 font-family:Montserrat,sans-serif;
@@ -22,6 +22,7 @@ min-height:100vh;
 background:
 linear-gradient(rgba(7,27,54,.78),rgba(13,71,161,.72)),
 url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1800&q=80');
+
 background-size:cover;
 background-position:center;
 display:flex;
@@ -38,16 +39,12 @@ grid-template-columns:1.2fr .8fr;
 gap:30px;
 }
 
-.left,.right{
+.left,
+.right{
 background:rgba(255,255,255,.94);
 border-radius:18px;
 padding:40px;
 box-shadow:0 10px 30px rgba(0,0,0,.18);
-}
-
-h1{
-font-size:54px;
-margin-bottom:18px;
 }
 
 .badge{
@@ -58,6 +55,11 @@ padding:8px 14px;
 border-radius:999px;
 font-weight:700;
 margin-bottom:20px;
+}
+
+h1{
+font-size:54px;
+margin-bottom:18px;
 }
 
 .feature-grid{
@@ -140,6 +142,7 @@ background:#0d47a1;
 }
 
 @media(max-width:900px){
+
 .container{
 grid-template-columns:1fr;
 }
@@ -151,18 +154,27 @@ grid-template-columns:1fr;
 h1{
 font-size:40px;
 }
+
 }
+
 </style>
 </head>
 
 <body>
+
 <div class="hero">
+
 <div class="container">
 
 <div class="left">
-<div class="badge">Air Medical Operations Portal</div>
 
-<h1>Connect Care Air Network</h1>
+<div class="badge">
+Air Medical Operations Portal
+</div>
+
+<h1>
+Connect Care Air Network
+</h1>
 
 <p>
 Centralized access for mission entry, operational risk assessment,
@@ -173,20 +185,27 @@ RFQ coordination, and transport documentation workflows.
 
 <div class="feature">
 <strong>Mission Operations</strong>
-<span>Access transport forms and mission coordination tools.</span>
+<span>
+Access transport forms and mission coordination tools.
+</span>
 </div>
 
 <div class="feature">
 <strong>Role-Based Access</strong>
-<span>Users only see forms assigned to their account.</span>
+<span>
+Users only see forms assigned to their account.
+</span>
 </div>
 
 <div class="feature">
 <strong>Google Sheets Backend</strong>
-<span>Forms continue feeding directly into Google Sheets.</span>
+<span>
+Forms continue feeding directly into Google Sheets.
+</span>
 </div>
 
 </div>
+
 </div>
 
 <div class="right">
@@ -194,9 +213,12 @@ RFQ coordination, and transport documentation workflows.
 <h2>Secure Portal Login</h2>
 
 <input type="text" id="username" placeholder="Username">
+
 <input type="password" id="password" placeholder="Password">
 
-<button type="button">Login</button>
+<button type="button">
+Login
+</button>
 
 <div id="status">
 Please sign in.
@@ -205,128 +227,13 @@ Please sign in.
 <div id="formsArea"></div>
 
 </div>
-</div>
+
 </div>
 
-<script src="assets/site-config.js"></script>
+</div>
 
 <script>
-function showStatus(message, type = "info") {
-  const status = document.getElementById("status");
 
-  status.innerHTML = message;
-
-  if (type === "error") {
-    status.style.background = "#fff1f2";
-    status.style.border = "2px solid #dc2626";
-    status.style.color = "#991b1b";
-  } else if (type === "success") {
-    status.style.background = "#f0fdf4";
-    status.style.border = "2px solid #16a34a";
-    status.style.color = "#166534";
-  } else {
-    status.style.background = "#eff6ff";
-    status.style.border = "1px solid #bfdbfe";
-    status.style.color = "#1e3a8a";
-  }
-}
-
-function login() {
-  showStatus("Checking login...", "info");
-
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
-
-  if (!usernameInput || !passwordInput) {
-    showStatus("<strong>Login error:</strong><br>The username or password box was not found.", "error");
-    return;
-  }
-
-  const username = usernameInput.value.trim();
-  const password = passwordInput.value.trim();
-
-  if (!username || !password) {
-    showStatus("<strong>Login required.</strong><br>Please enter both username and password.", "error");
-    return;
-  }
-
-  if (typeof USERS === "undefined") {
-    showStatus("<strong>Configuration error.</strong><br>The file assets/site-config.js is not loading.", "error");
-    return;
-  }
-
-  if (typeof FORMS === "undefined") {
-    showStatus("<strong>Configuration error.</strong><br>The forms list is missing from site-config.js.", "error");
-    return;
-  }
-
-  const user = USERS[username];
-
-  if (!user) {
-    showStatus("<strong>Login incorrect.</strong><br>Username was not found.", "error");
-    return;
-  }
-
-  if (user.password !== password) {
-    showStatus("<strong>Login incorrect.</strong><br>Password is incorrect.", "error");
-    return;
-  }
-
-  showStatus("<strong>Welcome " + user.name + ".</strong><br>Access granted.", "success");
-
-  const formsArea = document.getElementById("formsArea");
-  formsArea.innerHTML = "<h3>Available Forms</h3>";
-
-  user.forms.forEach(formKey => {
-    const form = FORMS[formKey];
-
-    if (!form) {
-      formsArea.innerHTML += `
-        <div class="form-card">
-          <h4>Missing Form</h4>
-          <p>The form key <strong>${formKey}</strong> does not exist in site-config.js.</p>
-        </div>
-      `;
-      return;
-    }
-
-    formsArea.innerHTML += `
-      <div class="form-card">
-        <h4>${form.title}</h4>
-        <p>${form.description}</p>
-        <a href="${form.url}">Open Form</a>
-      </div>
-    `;
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const loginButton = document.querySelector("button");
-
-  if (loginButton) {
-    loginButton.addEventListener("click", login);
-  }
-
-  const passwordBox = document.getElementById("password");
-
-  if (passwordBox) {
-    passwordBox.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        login();
-      }
-    });
-  }
-});
-</script>
-</body>
-</html>
-```
-
----
-
-# assets/site-config.js
-
-```javascript
 const USERS = {
 
   "Griff": {
@@ -377,137 +284,126 @@ const FORMS = {
   }
 
 };
-```
 
----
+function showStatus(message, type = "info") {
 
-# forms/mission-case-entry.html
+  const status = document.getElementById("status");
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-<title>Mission Case Entry</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-padding:30px;
+  status.innerHTML = message;
+
+  if (type === "error") {
+
+    status.style.background = "#fff1f2";
+    status.style.border = "2px solid #dc2626";
+    status.style.color = "#991b1b";
+
+  } else if (type === "success") {
+
+    status.style.background = "#f0fdf4";
+    status.style.border = "2px solid #16a34a";
+    status.style.color = "#166534";
+
+  } else {
+
+    status.style.background = "#eff6ff";
+    status.style.border = "1px solid #bfdbfe";
+    status.style.color = "#1e3a8a";
+
+  }
+
 }
 
-.card{
-background:white;
-padding:30px;
-border-radius:14px;
-max-width:900px;
-margin:auto;
+function login() {
+
+  showStatus("Checking login...", "info");
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const password =
+    document.getElementById("password").value.trim();
+
+  if (!username || !password) {
+
+    showStatus(
+      "<strong>Login required.</strong><br>Please enter both username and password.",
+      "error"
+    );
+
+    return;
+  }
+
+  const user = USERS[username];
+
+  if (!user) {
+
+    showStatus(
+      "<strong>Login incorrect.</strong><br>Username was not found.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (user.password !== password) {
+
+    showStatus(
+      "<strong>Login incorrect.</strong><br>Password is incorrect.",
+      "error"
+    );
+
+    return;
+  }
+
+  showStatus(
+    "<strong>Welcome " + user.name + ".</strong><br>Access granted.",
+    "success"
+  );
+
+  const formsArea =
+    document.getElementById("formsArea");
+
+  formsArea.innerHTML =
+    "<h3>Available Forms</h3>";
+
+  user.forms.forEach(formKey => {
+
+    const form = FORMS[formKey];
+
+    formsArea.innerHTML += `
+      <div class="form-card">
+        <h4>${form.title}</h4>
+        <p>${form.description}</p>
+        <a href="${form.url}">
+          Open Form
+        </a>
+      </div>
+    `;
+
+  });
+
 }
 
-input,textarea{
-width:100%;
-padding:12px;
-margin-bottom:14px;
-border-radius:10px;
-border:1px solid #ccc;
-}
+document.addEventListener("DOMContentLoaded", function () {
 
-button{
-padding:14px 18px;
-background:#1565c0;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
+  const loginButton =
+    document.querySelector("button");
 
-#result{
-margin-top:20px;
-padding:14px;
-border-radius:10px;
-background:#eff6ff;
-}
-</style>
-</head>
-<body>
+  loginButton.addEventListener("click", login);
 
-<div class="card">
-<h1>Mission Case Entry</h1>
+  document
+    .getElementById("password")
+    .addEventListener("keydown", function (event) {
 
-<form id="missionForm">
+      if (event.key === "Enter") {
+        login();
+      }
 
-<input type="text" name="caseNumber" placeholder="Case Number" required>
-
-<input type="text" name="name" placeholder="Name" required>
-
-<input type="text" name="destination" placeholder="Destination">
-
-<textarea name="narrative" placeholder="Narrative"></textarea>
-
-<button type="submit">Submit Case</button>
-
-</form>
-
-<div id="result"></div>
-
-</div>
-
-<script>
-document.getElementById("missionForm").addEventListener("submit", async (e) => {
-
-e.preventDefault();
-
-const formData = Object.fromEntries(new FormData(e.target).entries());
-
-const response = await fetch(
-"https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
-{
-method:"POST",
-body:JSON.stringify(formData)
-}
-);
-
-const text = await response.text();
-
-document.getElementById("result").innerHTML =
-"<strong>Submitted!</strong><br>" + text;
+    });
 
 });
+
 </script>
+
 </body>
 </html>
-```
-
----
-
-# forms/daily-risk.html
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-<title>Daily Risk Assessment</title>
-</head>
-<body>
-<h1>Daily Risk Assessment Placeholder</h1>
-</body>
-</html>
-```
-
----
-
-# forms/rfq-intake.html
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-<title>RFQ Intake</title>
-</head>
-<body>
-<h1>RFQ Intake Placeholder</h1>
-</body>
-</html>
-```
