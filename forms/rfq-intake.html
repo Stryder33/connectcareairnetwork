@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Transport RFQ Intake</title>
+
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
@@ -63,9 +64,7 @@
       gap: 18px 22px;
     }
 
-    .full {
-      grid-column: 1 / -1;
-    }
+    .full { grid-column: 1 / -1; }
 
     label {
       display: block;
@@ -100,9 +99,7 @@
       resize: vertical;
     }
 
-    .required {
-      color: #dc2626;
-    }
+    .required { color: #dc2626; }
 
     .checkbox-card {
       display: flex;
@@ -134,9 +131,7 @@
       margin-top: 5px;
     }
 
-    #otherBox {
-      display: none;
-    }
+    #otherBox { display: none; }
 
     .actions {
       display: flex;
@@ -158,6 +153,11 @@
     .submit {
       background: #2563eb;
       color: white;
+    }
+
+    .submit:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
     }
 
     .reset {
@@ -195,13 +195,8 @@
     }
 
     @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .page {
-        padding: 16px;
-      }
+      .grid { grid-template-columns: 1fr; }
+      .page { padding: 16px; }
     }
   </style>
 </head>
@@ -218,6 +213,7 @@
 
     <div class="section">
       <h2>Authorization</h2>
+
       <div class="grid">
         <div>
           <label>Case Number <span class="required">*</span></label>
@@ -236,6 +232,7 @@
 
     <div class="section">
       <h2>Coordinator Information</h2>
+
       <div class="grid">
         <div>
           <label>Coordinator Name <span class="required">*</span></label>
@@ -261,6 +258,7 @@
 
     <div class="section">
       <h2>Patient Information</h2>
+
       <div class="grid">
         <div>
           <label>Patient Full Name <span class="required">*</span></label>
@@ -296,6 +294,7 @@
 
     <div class="section">
       <h2>Patient Location</h2>
+
       <div class="grid">
         <div>
           <label>Patient Location Type <span class="required">*</span></label>
@@ -330,6 +329,7 @@
 
     <div class="section">
       <h2>Flight Information</h2>
+
       <div class="grid">
         <div>
           <label>Scheduled Departure Date/Time <span class="required">*</span></label>
@@ -363,6 +363,7 @@
 
     <div class="section">
       <h2>Medical Equipment & Travel Documents</h2>
+
       <div class="grid">
         <div class="full">
           <label>Additional Medical Equipment Required</label>
@@ -383,6 +384,7 @@
 
     <div class="section">
       <h2>Quote Validity</h2>
+
       <div class="grid">
         <div>
           <label>Quote Validity Requested <span class="required">*</span></label>
@@ -402,6 +404,7 @@
 
     <div class="section">
       <h2>Signature</h2>
+
       <div class="grid">
         <div>
           <label>Requestor Signature <span class="required">*</span></label>
@@ -424,25 +427,27 @@
 
     <div class="actions">
       <button type="button" class="reset" onclick="resetForm()">Reset</button>
-      <button type="submit" class="submit">Submit RFQ</button>
+      <button id="submitBtn" type="submit" class="submit">Submit RFQ</button>
     </div>
 
   </form>
 </div>
 
 <script>
-function toggleOther() {
-  const val = document.getElementById('quoteValidity').value;
-  const box = document.getElementById('otherBox');
-  const notes = document.getElementById('otherQuoteValidityNotes');
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzScF7pGQaWeHw7sWuXs24v1_E-dVz4RP0-YjIJNlyHnEsJ0DOwHBWhRlgYYZN0pR6O/exec";
 
-  if (val === 'Other') {
-    box.style.display = 'block';
+function toggleOther() {
+  const val = document.getElementById("quoteValidity").value;
+  const box = document.getElementById("otherBox");
+  const notes = document.getElementById("otherQuoteValidityNotes");
+
+  if (val === "Other") {
+    box.style.display = "block";
     notes.required = true;
   } else {
-    box.style.display = 'none';
+    box.style.display = "none";
     notes.required = false;
-    notes.value = '';
+    notes.value = "";
   }
 }
 
@@ -450,66 +455,98 @@ function getValue(id) {
   return document.getElementById(id).value;
 }
 
-document.getElementById('rfqForm').addEventListener('submit', function(e) {
+function showStatus(message, type) {
+  const status = document.getElementById("status");
+  status.className = type;
+  status.innerHTML = message;
+}
+
+document.getElementById("rfqForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  const status = document.getElementById('status');
-  status.className = 'working';
-  status.innerHTML = 'Submitting RFQ...';
+  const submitBtn = document.getElementById("submitBtn");
+
+  showStatus("Submitting RFQ...", "working");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
   const formData = {
-    caseNumber: getValue('caseNumber'),
-    authorized: document.getElementById('authorized').checked,
-    coordinatorName: getValue('coordinatorName'),
-    coordinatorEmail: getValue('coordinatorEmail'),
-    coordinatorPhone: getValue('coordinatorPhone'),
-    requestStartTime: getValue('requestStartTime'),
-    patientFullName: getValue('patientFullName'),
-    patientAge: getValue('patientAge'),
-    patientSex: getValue('patientSex'),
-    medicalReportLink: getValue('medicalReportLink'),
-    patientNarrative: getValue('patientNarrative'),
-    patientLocationType: getValue('patientLocationType'),
-    patientLocationDetails: getValue('patientLocationDetails'),
-    originatingCity: getValue('originatingCity'),
-    originatingICAO: getValue('originatingICAO'),
-    scheduledDeparture: getValue('scheduledDeparture'),
-    flexibleDeparture: getValue('flexibleDeparture'),
-    flexibilityNotes: getValue('flexibilityNotes'),
-    groundTransportRequired: getValue('groundTransportRequired'),
-    additionalMedicalEquipment: getValue('additionalMedicalEquipment'),
-    passportLink: getValue('passportLink'),
-    visaLink: getValue('visaLink'),
-    quoteValidity: getValue('quoteValidity'),
-    otherQuoteValidityNotes: getValue('otherQuoteValidityNotes'),
-    requestorSignature: getValue('requestorSignature'),
-    assignedCoordinator: getValue('assignedCoordinator'),
-    notes: getValue('notes')
+    caseNumber: getValue("caseNumber"),
+    authorized: document.getElementById("authorized").checked,
+    coordinatorName: getValue("coordinatorName"),
+    coordinatorEmail: getValue("coordinatorEmail"),
+    coordinatorPhone: getValue("coordinatorPhone"),
+    requestStartTime: getValue("requestStartTime"),
+    patientFullName: getValue("patientFullName"),
+    patientAge: getValue("patientAge"),
+    patientSex: getValue("patientSex"),
+    medicalReportLink: getValue("medicalReportLink"),
+    patientNarrative: getValue("patientNarrative"),
+    patientLocationType: getValue("patientLocationType"),
+    patientLocationDetails: getValue("patientLocationDetails"),
+    originatingCity: getValue("originatingCity"),
+    originatingICAO: getValue("originatingICAO"),
+    scheduledDeparture: getValue("scheduledDeparture"),
+    flexibleDeparture: getValue("flexibleDeparture"),
+    flexibilityNotes: getValue("flexibilityNotes"),
+    groundTransportRequired: getValue("groundTransportRequired"),
+    additionalMedicalEquipment: getValue("additionalMedicalEquipment"),
+    passportLink: getValue("passportLink"),
+    visaLink: getValue("visaLink"),
+    quoteValidity: getValue("quoteValidity"),
+    otherQuoteValidityNotes: getValue("otherQuoteValidityNotes"),
+    requestorSignature: getValue("requestorSignature"),
+    assignedCoordinator: getValue("assignedCoordinator"),
+    notes: getValue("notes")
   };
 
-  google.script.run
-    .withSuccessHandler(function(response) {
-      status.className = 'success';
-      status.innerHTML = response.message + ' Written to row ' + response.row + '.';
-      document.getElementById('rfqForm').reset();
-      toggleOther();
-      window.scrollTo(0, 0);
-    })
-    .withFailureHandler(function(error) {
-      status.className = 'error';
-      status.innerHTML = 'ERROR: ' + error.message;
-    })
-    .submitRFQ(formData);
+  try {
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify(formData)
+    });
+
+    const text = await response.text();
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch (parseError) {
+      throw new Error("The server did not return valid JSON. Response was: " + text);
+    }
+
+    if (!result.success) {
+      throw new Error(result.message || "Submission failed.");
+    }
+
+    showStatus(result.message + " Written to row " + result.row + ".", "success");
+
+    document.getElementById("rfqForm").reset();
+    toggleOther();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  } catch (error) {
+    showStatus("ERROR: " + error.message, "error");
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Submit RFQ";
 });
 
 function resetForm() {
-  document.getElementById('rfqForm').reset();
+  document.getElementById("rfqForm").reset();
   toggleOther();
 
-  const status = document.getElementById('status');
-  status.className = '';
-  status.innerHTML = '';
+  const status = document.getElementById("status");
+  status.className = "";
+  status.innerHTML = "";
 }
+
+toggleOther();
 </script>
 
 </body>
