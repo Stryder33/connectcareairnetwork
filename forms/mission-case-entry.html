@@ -1,77 +1,327 @@
 <!DOCTYPE html>
-margin:auto;
-}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-input,textarea{
-width:100%;
-padding:12px;
-margin-bottom:14px;
-border-radius:10px;
-border:1px solid #ccc;
-}
+  <title>Mission Case Entry</title>
 
-button{
-padding:14px 18px;
-background:#1565c0;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-#result{
-margin-top:20px;
-padding:14px;
-border-radius:10px;
-background:#eff6ff;
-}
-</style>
+  <style>
+
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #0d47a1;
+      --bg: #f0f3f7;
+      --card-bg: #ffffff;
+      --radius: 10px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: 0.25s ease;
+    }
+
+    body {
+      margin: 0;
+      font-family: Montserrat, sans-serif;
+      background: var(--bg);
+      color: #333;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    #app {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-weight: 600;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+
+    select {
+      background: white;
+      cursor: pointer;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(25,118,210,0.2);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 14px 26px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 17px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 20px;
+    }
+
+    button:disabled {
+      background: #9bbad8;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e8f4ff;
+      border-left: 5px solid var(--primary);
+      border-radius: var(--radius);
+      display: none;
+    }
+
+    #riskPreview {
+      font-size: 18px;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: var(--radius);
+      background: #fafafa;
+      border-left: 5px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+  </style>
 </head>
+
 <body>
 
-<div class="card">
-<h1>Mission Case Entry</h1>
+<header>
+  <h1>Mission Case Entry Portal</h1>
+</header>
 
-<form id="missionForm">
+<div id="app">
 
-<input type="text" name="caseNumber" placeholder="Case Number" required>
+  <div class="card">
 
-<input type="text" name="name" placeholder="Name" required>
+    <h2>Mission Details</h2>
 
-<input type="text" name="destination" placeholder="Destination">
+    <div id="riskPreview">
+      Risk Score: 0 (Low)
+    </div>
 
-<textarea name="narrative" placeholder="Narrative"></textarea>
+    <form id="missionForm">
 
-<button type="submit">Submit Case</button>
+      <div class="grid">
 
-</form>
+        <div>
+          <label>Case Number</label>
+          <input type="text" name="caseNumber" required>
+        </div>
 
-<div id="result"></div>
+        <div>
+          <label>Name</label>
+          <input type="text" name="name" required>
+        </div>
+
+        <div>
+          <label>Start Time</label>
+          <input type="datetime-local" name="startTime">
+        </div>
+
+        <div>
+          <label>Flight Destination</label>
+          <input type="text" name="destination">
+        </div>
+
+        <div>
+          <label>Route</label>
+          <input type="text" name="route">
+        </div>
+
+      </div>
+
+      <h2>Risk Factors</h2>
+
+      <div class="grid">
+
+        <div>
+          <label>Weather Risk</label>
+          <select name="weatherText">
+            <option value="0">0 - Normal / VFR</option>
+            <option value="1">1 - Marginal</option>
+            <option value="2">2 - IFR</option>
+            <option value="3">3 - Severe / Hazardous</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Night Operation</label>
+          <select name="nightText">
+            <option value="0">0 - Day</option>
+            <option value="1">1 - Dusk/Dawn</option>
+            <option value="2">2 - Night</option>
+            <option value="3">3 - Night + Low Illumination</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Terrain Risk</label>
+          <select name="terrainText">
+            <option value="0">0 - Flat / Normal</option>
+            <option value="1">1 - Rolling Terrain</option>
+            <option value="2">2 - Hilly</option>
+            <option value="3">3 - Over Water / Mountainous</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Fatigue Risk</label>
+          <select name="fatigueText">
+            <option value="0">0 - Well Rested</option>
+            <option value="1">1 - Mild Fatigue</option>
+            <option value="2">2 - Tired</option>
+            <option value="3">3 - Severe Fatigue</option>
+          </select>
+        </div>
+
+      </div>
+
+      <label>Narrative</label>
+
+      <textarea name="narrative" rows="4"></textarea>
+
+      <button id="submitBtn" type="submit">
+        Submit Case
+      </button>
+
+    </form>
+
+    <div id="result"></div>
+
+  </div>
 
 </div>
 
 <script>
-document.getElementById("missionForm").addEventListener("submit", async (e) => {
 
-e.preventDefault();
+const riskInputs = document.querySelectorAll("select");
+const riskPreview = document.getElementById("riskPreview");
 
-const formData = Object.fromEntries(new FormData(e.target).entries());
+function updateRiskPreview() {
 
-const response = await fetch(
-"https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
-{
-method:"POST",
-body:JSON.stringify(formData)
+  let score = 0;
+
+  riskInputs.forEach(i => {
+    score += Number(i.value || 0);
+  });
+
+  let level = "Low";
+
+  if (score >= 9) {
+    level = "High";
+  } else if (score >= 5) {
+    level = "Moderate";
+  }
+
+  riskPreview.textContent =
+    `Risk Score: ${score} (${level})`;
+
 }
+
+riskInputs.forEach(i =>
+  i.addEventListener("change", updateRiskPreview)
 );
 
-const text = await response.text();
+document
+.getElementById("missionForm")
+.addEventListener("submit", async (e) => {
 
-document.getElementById("result").innerHTML =
-"<strong>Submitted!</strong><br>" + text;
+  e.preventDefault();
+
+  const submitBtn =
+    document.getElementById("submitBtn");
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  const formData =
+    Object.fromEntries(
+      new FormData(e.target).entries()
+    );
+
+  const response = await fetch(
+    "https://script.google.com/macros/s/AKfycbztXDEmOXhyQmuqY6hHeC_yVYs2StKMTOleKM6vEqg24iB9pSeNJW4oXtkZdodd-c4urw/exec",
+    {
+      method: "POST",
+      body: JSON.stringify(formData)
+    }
+  );
+
+  const text = await response.text();
+
+  const resultBox =
+    document.getElementById("result");
+
+  resultBox.style.display = "block";
+
+  resultBox.innerHTML =
+    "<strong>✔ Submitted!</strong><br>" + text;
+
+  e.target.reset();
+
+  updateRiskPreview();
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Submit Case";
 
 });
+
 </script>
+
 </body>
 </html>
