@@ -3,42 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Medical Transport RFQ Intake</title>
 
 <style>
-*{box-sizing:border-box;}
-body{font-family:Arial,sans-serif;margin:0;background:#eef2f7;color:#1f2937;}
-.page{max-width:1200px;margin:0 auto;padding:28px;}
-.header{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white;padding:28px;border-radius:18px;margin-bottom:24px;box-shadow:0 8px 20px rgba(0,0,0,.15);}
-.header h1{margin:0;font-size:31px;}
-.header p{margin:8px 0 0;color:#dbeafe;}
-.section{background:white;border-radius:18px;padding:22px;margin-bottom:22px;box-shadow:0 4px 14px rgba(0,0,0,.08);border:1px solid #e5e7eb;}
-.section h2{margin:0 0 18px;font-size:20px;border-bottom:1px solid #e5e7eb;padding-bottom:10px;}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 22px;}
-.full{grid-column:1/-1;}
-label{display:block;font-weight:700;margin-bottom:6px;font-size:14px;}
-input,select,textarea{width:100%;padding:12px 13px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;font-size:15px;}
-textarea{min-height:95px;resize:vertical;}
-.required{color:#dc2626;}
-.checkbox-card{display:flex;align-items:flex-start;gap:12px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:14px;padding:14px;}
-.checkbox-card input{width:20px;height:20px;margin-top:2px;}
-.actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;margin-bottom:20px;}
-button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;}
-.submit{background:#2563eb;color:white;}
-.submit:disabled{background:#93c5fd;cursor:not-allowed;}
-.reset{background:#e5e7eb;color:#111827;}
-#status{display:none;padding:14px;border-radius:12px;font-weight:700;margin-bottom:20px;}
-.success{display:block!important;background:#dcfce7;color:#166534;border:1px solid #86efac;}
-.working{display:block!important;background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
-#error,.error{display:block!important;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
-#otherBox{display:none;}
-@media(max-width:800px){.grid{grid-template-columns:1fr;}.page{padding:16px;}}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #eef2f7;
+  color: #1f2937;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.header {
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: white;
+  padding: 28px;
+  border-radius: 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 31px;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: #dbeafe;
+}
+
+.section {
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  border: 1px solid #e5e7eb;
+}
+
+.section h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 22px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+.required {
+  color: #dc2626;
+}
+
+.checkbox-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.checkbox-card input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  margin-bottom: 20px;
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit {
+  background: #2563eb;
+  color: white;
+}
+
+.submit:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.reset {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+#status {
+  display: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.success {
+  display: block !important;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.error {
+  display: block !important;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.working {
+  display: block !important;
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+#otherBox {
+  display: none;
+}
+
+@media(max-width:800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    padding: 16px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <div class="page">
+
   <div class="header">
     <h1>Medical Transport RFQ Intake</h1>
     <p>Submit a complete request for quote for medical transport review and coordination.</p>
@@ -48,33 +211,63 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
 
     <div class="section">
       <h2>Authorization</h2>
+
       <div class="grid">
         <div>
           <label>Case Number <span class="required">*</span></label>
           <input id="caseNumber" required placeholder="Example: RFQ-2026-001">
         </div>
+
         <div class="checkbox-card">
           <input type="checkbox" id="authorized" required>
-          <label for="authorized">I certify that I am authorized to request this quote. <span class="required">*</span></label>
+          <label for="authorized">
+            I certify that I am authorized to request this quote.
+            <span class="required">*</span>
+          </label>
         </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Coordinator Information</h2>
+
       <div class="grid">
-        <div><label>Coordinator Name <span class="required">*</span></label><input id="coordinatorName" required></div>
-        <div><label>Coordinator Email <span class="required">*</span></label><input id="coordinatorEmail" type="email" required></div>
-        <div><label>Coordinator Phone Number <span class="required">*</span></label><input id="coordinatorPhone" required></div>
-        <div><label>Request Start Time <span class="required">*</span></label><input id="requestStartTime" type="datetime-local" required></div>
+        <div>
+          <label>Coordinator Name <span class="required">*</span></label>
+          <input id="coordinatorName" required>
+        </div>
+
+        <div>
+          <label>Coordinator Email <span class="required">*</span></label>
+          <input id="coordinatorEmail" type="email" required>
+        </div>
+
+        <div>
+          <label>Coordinator Phone Number <span class="required">*</span></label>
+          <input id="coordinatorPhone" required>
+        </div>
+
+        <div>
+          <label>Request Start Time <span class="required">*</span></label>
+          <input id="requestStartTime" type="datetime-local" required>
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Patient Information</h2>
+
       <div class="grid">
-        <div><label>Patient Full Name <span class="required">*</span></label><input id="patientFullName" required></div>
-        <div><label>Patient Age <span class="required">*</span></label><input id="patientAge" type="number" min="0" required></div>
+        <div>
+          <label>Patient Full Name <span class="required">*</span></label>
+          <input id="patientFullName" required>
+        </div>
+
+        <div>
+          <label>Patient Age <span class="required">*</span></label>
+          <input id="patientAge" type="number" min="0" required>
+        </div>
+
         <div>
           <label>Patient Sex <span class="required">*</span></label>
           <select id="patientSex" required>
@@ -84,13 +277,22 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
             <option>Other</option>
           </select>
         </div>
-        <div><label>Medical Report Upload Link</label><input id="medicalReportLink" placeholder="Paste Google Drive link"></div>
-        <div class="full"><label>Patient Narrative / Medical Summary</label><textarea id="patientNarrative"></textarea></div>
+
+        <div>
+          <label>Medical Report Upload Link</label>
+          <input id="medicalReportLink" placeholder="Paste Google Drive link">
+        </div>
+
+        <div class="full">
+          <label>Patient Narrative / Medical Summary</label>
+          <textarea id="patientNarrative" placeholder="Enter clinical narrative or summary if no report is uploaded."></textarea>
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Patient Location</h2>
+
       <div class="grid">
         <div>
           <label>Patient Location Type <span class="required">*</span></label>
@@ -104,16 +306,33 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
             <option>Other</option>
           </select>
         </div>
-        <div><label>Originating City <span class="required">*</span></label><input id="originatingCity" required></div>
-        <div><label>Originating ICAO Airport Code <span class="required">*</span></label><input id="originatingICAO" maxlength="4" required placeholder="Example: KBDG"></div>
-        <div class="full"><label>Patient Location Details <span class="required">*</span></label><textarea id="patientLocationDetails" required></textarea></div>
+
+        <div>
+          <label>Originating City <span class="required">*</span></label>
+          <input id="originatingCity" required>
+        </div>
+
+        <div>
+          <label>Originating ICAO Airport Code <span class="required">*</span></label>
+          <input id="originatingICAO" maxlength="4" required placeholder="Example: KBDG">
+        </div>
+
+        <div class="full">
+          <label>Patient Location Details <span class="required">*</span></label>
+          <textarea id="patientLocationDetails" required placeholder="Hospital name, room number, address, contact details, etc."></textarea>
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Flight Information</h2>
+
       <div class="grid">
-        <div><label>Scheduled Departure Date/Time <span class="required">*</span></label><input id="scheduledDeparture" type="datetime-local" required></div>
+        <div>
+          <label>Scheduled Departure Date/Time <span class="required">*</span></label>
+          <input id="scheduledDeparture" type="datetime-local" required>
+        </div>
+
         <div>
           <label>Flexible Departure Time? <span class="required">*</span></label>
           <select id="flexibleDeparture" required>
@@ -122,6 +341,7 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
             <option>No</option>
           </select>
         </div>
+
         <div>
           <label>Ground Transport Required at All Legs? <span class="required">*</span></label>
           <select id="groundTransportRequired" required>
@@ -130,21 +350,38 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
             <option>No</option>
           </select>
         </div>
-        <div class="full"><label>Flexibility Notes</label><textarea id="flexibilityNotes"></textarea></div>
+
+        <div class="full">
+          <label>Flexibility Notes</label>
+          <textarea id="flexibilityNotes" placeholder="Explain flexibility window, preferred times, restrictions, etc."></textarea>
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Medical Equipment & Travel Documents</h2>
+
       <div class="grid">
-        <div class="full"><label>Additional Medical Equipment Required</label><textarea id="additionalMedicalEquipment"></textarea></div>
-        <div><label>Passport Upload Link</label><input id="passportLink"></div>
-        <div><label>Visa Upload Link</label><input id="visaLink"></div>
+        <div class="full">
+          <label>Additional Medical Equipment Required</label>
+          <textarea id="additionalMedicalEquipment" placeholder="Ventilator, oxygen, isolette, bariatric equipment, specialty medications, etc."></textarea>
+        </div>
+
+        <div>
+          <label>Passport Upload Link</label>
+          <input id="passportLink" placeholder="Paste Google Drive link">
+        </div>
+
+        <div>
+          <label>Visa Upload Link</label>
+          <input id="visaLink" placeholder="Paste Google Drive link">
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Quote Validity</h2>
+
       <div class="grid">
         <div>
           <label>Quote Validity Requested <span class="required">*</span></label>
@@ -154,16 +391,32 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
             <option>Other</option>
           </select>
         </div>
-        <div id="otherBox"><label>Other Quote Validity Notes <span class="required">*</span></label><input id="otherQuoteValidityNotes"></div>
+
+        <div id="otherBox">
+          <label>Other Quote Validity Notes <span class="required">*</span></label>
+          <input id="otherQuoteValidityNotes" placeholder="Explain requested validity period">
+        </div>
       </div>
     </div>
 
     <div class="section">
       <h2>Signature</h2>
+
       <div class="grid">
-        <div><label>Requestor Signature <span class="required">*</span></label><input id="requestorSignature" required></div>
-        <div><label>Assigned Coordinator</label><input id="assignedCoordinator"></div>
-        <div class="full"><label>Notes</label><textarea id="notes"></textarea></div>
+        <div>
+          <label>Requestor Signature <span class="required">*</span></label>
+          <input id="requestorSignature" required placeholder="Type full legal name">
+        </div>
+
+        <div>
+          <label>Assigned Coordinator</label>
+          <input id="assignedCoordinator">
+        </div>
+
+        <div class="full">
+          <label>Notes</label>
+          <textarea id="notes"></textarea>
+        </div>
       </div>
     </div>
 
@@ -173,20 +426,15 @@ button{border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weig
       <button type="button" class="reset" onclick="resetForm()">Reset</button>
       <button id="submitBtn" type="submit" class="submit">Submit RFQ</button>
     </div>
+
   </form>
+
 </div>
 
-<iframe name="submitFrame" id="submitFrame" style="display:none;"></iframe>
-
-<form id="appsScriptSubmitForm"
-      action="https://script.google.com/macros/s/AKfycbwJnBTnOVZLaVupdQ62qYqIKsQbxUcPGOD0bPXhBzc/dev"
-      method="POST"
-      target="submitFrame"
-      style="display:none;">
-  <input type="hidden" name="payload" id="payload">
-</form>
-
 <script>
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbzAtL9-TyOb4WH7FkrMSR_O4LqZIFRz04SvZ9pEELJMWwseI9THKUJVG6NyMffzbQel/exec";
+  
 function toggleOther() {
   const val = document.getElementById("quoteValidity").value;
   const box = document.getElementById("otherBox");
@@ -213,11 +461,19 @@ function showStatus(message, type) {
   status.innerHTML = message;
 }
 
-document.getElementById("rfqForm").addEventListener("submit", function(e) {
+function resetButton() {
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Submit RFQ";
+}
+
+document.getElementById("rfqForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const submitBtn = document.getElementById("submitBtn");
+
   showStatus("Submitting RFQ...", "working");
+
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
@@ -251,22 +507,57 @@ document.getElementById("rfqForm").addEventListener("submit", function(e) {
     notes: getValue("notes")
   };
 
-  document.getElementById("payload").value = JSON.stringify(formData);
-  document.getElementById("appsScriptSubmitForm").submit();
+  try {
+    const response = await fetch(
+      WEB_APP_URL,
+      {
+        method: "POST",
+        body: JSON.stringify(formData)
+      }
+    );
 
-  setTimeout(function() {
-    showStatus("RFQ sent. Check the Google Sheet.", "success");
+    const text = await response.text();
+
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch (parseError) {
+      result = {
+        success: true,
+        message: text || "RFQ submitted."
+      };
+    }
+
+    if (result.success === false) {
+      throw new Error(result.message || "Submission failed.");
+    }
+
+    showStatus(
+      (result.message || "RFQ submitted successfully.") +
+      (result.row ? " Row " + result.row + "." : ""),
+      "success"
+    );
+
     document.getElementById("rfqForm").reset();
     toggleOther();
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit RFQ";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, 2500);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  } catch (error) {
+    showStatus("ERROR: " + error.message, "error");
+  }
+
+  resetButton();
 });
 
 function resetForm() {
   document.getElementById("rfqForm").reset();
   toggleOther();
+
   const status = document.getElementById("status");
   status.className = "";
   status.innerHTML = "";
