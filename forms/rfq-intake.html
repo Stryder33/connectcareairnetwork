@@ -1,570 +1,355 @@
-<!DOCTYPE html>
+<!-- index.html - paste into a static host or open locally; update WEB_APP_URL -->
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Medical Transport RFQ Intake</title>
-
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #eef2f7;
-  color: #1f2937;
-}
-
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 28px;
-}
-
-.header {
-  background: linear-gradient(135deg, #0f172a, #1e3a8a);
-  color: white;
-  padding: 28px;
-  border-radius: 18px;
-  margin-bottom: 24px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.15);
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 31px;
-}
-
-.header p {
-  margin: 8px 0 0;
-  color: #dbeafe;
-}
-
-.section {
-  background: white;
-  border-radius: 18px;
-  padding: 22px;
-  margin-bottom: 22px;
-  box-shadow: 0 4px 14px rgba(0,0,0,.08);
-  border: 1px solid #e5e7eb;
-}
-
-.section h2 {
-  margin: 0 0 18px;
-  font-size: 20px;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 10px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px 22px;
-}
-
-.full {
-  grid-column: 1 / -1;
-}
-
-label {
-  display: block;
-  font-weight: 700;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 12px 13px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f8fafc;
-  font-size: 15px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #2563eb;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
-}
-
-textarea {
-  min-height: 95px;
-  resize: vertical;
-}
-
-.required {
-  color: #dc2626;
-}
-
-.checkbox-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.checkbox-card input {
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-  margin-bottom: 20px;
-}
-
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 14px 24px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.submit {
-  background: #2563eb;
-  color: white;
-}
-
-.submit:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
-}
-
-.reset {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-#status {
-  display: none;
-  padding: 14px;
-  border-radius: 12px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.success {
-  display: block !important;
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #86efac;
-}
-
-.error {
-  display: block !important;
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-}
-
-.working {
-  display: block !important;
-  background: #dbeafe;
-  color: #1e40af;
-  border: 1px solid #93c5fd;
-}
-
-#otherBox {
-  display: none;
-}
-
-@media(max-width:800px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .page {
-    padding: 16px;
-  }
-}
+  /* Minimal styles (kept small for clarity) */
+  body{font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#111;margin:0;padding:20px}
+  .container{max-width:1000px;margin:0 auto}
+  .card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06);margin-bottom:16px}
+  label{display:block;font-weight:700;margin-bottom:6px}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #cbd5e1;background:#f8fafc}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .full{grid-column:1/-1}
+  .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+  button{padding:10px 16px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+  .submit{background:#2563eb;color:#fff}
+  .reset{background:#e5e7eb}
+  #status{display:none;padding:12px;border-radius:8px;margin-bottom:12px;font-weight:700}
+  .success{display:block;background:#dcfce7;color:#166534;border:1px solid #86efac}
+  .error{display:block;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+  .working{display:block;background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
-
-<div class="page">
-
-  <div class="header">
+<div class="container">
+  <div class="card">
     <h1>Medical Transport RFQ Intake</h1>
     <p>Submit a complete request for quote for medical transport review and coordination.</p>
   </div>
 
-  <form id="rfqForm">
-
-    <div class="section">
-      <h2>Authorization</h2>
-
-      <div class="grid">
-        <div>
-          <label>Case Number <span class="required">*</span></label>
-          <input id="caseNumber" required placeholder="Example: RFQ-2026-001">
-        </div>
-
-        <div class="checkbox-card">
-          <input type="checkbox" id="authorized" required>
-          <label for="authorized">
-            I certify that I am authorized to request this quote.
-            <span class="required">*</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Coordinator Information</h2>
-
-      <div class="grid">
-        <div>
-          <label>Coordinator Name <span class="required">*</span></label>
-          <input id="coordinatorName" required>
-        </div>
-
-        <div>
-          <label>Coordinator Email <span class="required">*</span></label>
-          <input id="coordinatorEmail" type="email" required>
-        </div>
-
-        <div>
-          <label>Coordinator Phone Number <span class="required">*</span></label>
-          <input id="coordinatorPhone" required>
-        </div>
-
-        <div>
-          <label>Request Start Time <span class="required">*</span></label>
-          <input id="requestStartTime" type="datetime-local" required>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Patient Information</h2>
-
-      <div class="grid">
-        <div>
-          <label>Patient Full Name <span class="required">*</span></label>
-          <input id="patientFullName" required>
-        </div>
-
-        <div>
-          <label>Patient Age <span class="required">*</span></label>
-          <input id="patientAge" type="number" min="0" required>
-        </div>
-
-        <div>
-          <label>Patient Sex <span class="required">*</span></label>
-          <select id="patientSex" required>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Medical Report Upload Link</label>
-          <input id="medicalReportLink" placeholder="Paste Google Drive link">
-        </div>
-
-        <div class="full">
-          <label>Patient Narrative / Medical Summary</label>
-          <textarea id="patientNarrative" placeholder="Enter clinical narrative or summary if no report is uploaded."></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Patient Location</h2>
-
-      <div class="grid">
-        <div>
-          <label>Patient Location Type <span class="required">*</span></label>
-          <select id="patientLocationType" required>
-            <option value="">Select</option>
-            <option>Hospital</option>
-            <option>Home</option>
-            <option>Clinic</option>
-            <option>Nursing Facility</option>
-            <option>Airport</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Originating City <span class="required">*</span></label>
-          <input id="originatingCity" required>
-        </div>
-
-        <div>
-          <label>Originating ICAO Airport Code <span class="required">*</span></label>
-          <input id="originatingICAO" maxlength="4" required placeholder="Example: KBDG">
-        </div>
-
-        <div class="full">
-          <label>Patient Location Details <span class="required">*</span></label>
-          <textarea id="patientLocationDetails" required placeholder="Hospital name, room number, address, contact details, etc."></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Flight Information</h2>
-
-      <div class="grid">
-        <div>
-          <label>Scheduled Departure Date/Time <span class="required">*</span></label>
-          <input id="scheduledDeparture" type="datetime-local" required>
-        </div>
-
-        <div>
-          <label>Flexible Departure Time? <span class="required">*</span></label>
-          <select id="flexibleDeparture" required>
-            <option value="">Select</option>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Ground Transport Required at All Legs? <span class="required">*</span></label>
-          <select id="groundTransportRequired" required>
-            <option value="">Select</option>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-
-        <div class="full">
-          <label>Flexibility Notes</label>
-          <textarea id="flexibilityNotes" placeholder="Explain flexibility window, preferred times, restrictions, etc."></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Medical Equipment & Travel Documents</h2>
-
-      <div class="grid">
-        <div class="full">
-          <label>Additional Medical Equipment Required</label>
-          <textarea id="additionalMedicalEquipment" placeholder="Ventilator, oxygen, isolette, bariatric equipment, specialty medications, etc."></textarea>
-        </div>
-
-        <div>
-          <label>Passport Upload Link</label>
-          <input id="passportLink" placeholder="Paste Google Drive link">
-        </div>
-
-        <div>
-          <label>Visa Upload Link</label>
-          <input id="visaLink" placeholder="Paste Google Drive link">
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Quote Validity</h2>
-
-      <div class="grid">
-        <div>
-          <label>Quote Validity Requested <span class="required">*</span></label>
-          <select id="quoteValidity" required onchange="toggleOther()">
-            <option value="">Select</option>
-            <option>24 Hours</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div id="otherBox">
-          <label>Other Quote Validity Notes <span class="required">*</span></label>
-          <input id="otherQuoteValidityNotes" placeholder="Explain requested validity period">
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Signature</h2>
-
-      <div class="grid">
-        <div>
-          <label>Requestor Signature <span class="required">*</span></label>
-          <input id="requestorSignature" required placeholder="Type full legal name">
-        </div>
-
-        <div>
-          <label>Assigned Coordinator</label>
-          <input id="assignedCoordinator">
-        </div>
-
-        <div class="full">
-          <label>Notes</label>
-          <textarea id="notes"></textarea>
-        </div>
-      </div>
-    </div>
-
+  <form id="rfqForm" class="card" novalidate>
     <div id="status"></div>
+
+    <section>
+      <h2>Authorization</h2>
+      <div class="grid">
+        <div>
+          <label for="caseNumber">Case Number <span style="color:#dc2626">*</span></label>
+          <input id="caseNumber" name="caseNumber" required placeholder="Example: RFQ-2026-001" />
+        </div>
+        <div>
+          <label><input id="authorized" name="authorized" type="checkbox" /> I certify that I am authorized to request this quote. <span style="color:#dc2626">*</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Coordinator Information</h2>
+      <div class="grid">
+        <div>
+          <label for="coordinatorName">Coordinator Name <span style="color:#dc2626">*</span></label>
+          <input id="coordinatorName" name="coordinatorName" required />
+        </div>
+        <div>
+          <label for="coordinatorEmail">Coordinator Email <span style="color:#dc2626">*</span></label>
+          <input id="coordinatorEmail" name="coordinatorEmail" type="email" required />
+        </div>
+        <div>
+          <label for="coordinatorPhone">Coordinator Phone Number <span style="color:#dc2626">*</span></label>
+          <input id="coordinatorPhone" name="coordinatorPhone" required />
+        </div>
+        <div>
+          <label for="requestStartTime">Request Start Time <span style="color:#dc2626">*</span></label>
+          <input id="requestStartTime" name="requestStartTime" type="datetime-local" required />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Patient Information</h2>
+      <div class="grid">
+        <div>
+          <label for="patientFullName">Patient Full Name <span style="color:#dc2626">*</span></label>
+          <input id="patientFullName" name="patientFullName" required />
+        </div>
+        <div>
+          <label for="patientAge">Patient Age <span style="color:#dc2626">*</span></label>
+          <input id="patientAge" name="patientAge" type="number" min="0" required />
+        </div>
+        <div>
+          <label for="patientSex">Patient Sex <span style="color:#dc2626">*</span></label>
+          <select id="patientSex" name="patientSex" required>
+            <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="medicalReportLink">Medical Report Upload Link</label>
+          <input id="medicalReportLink" name="medicalReportLink" placeholder="Paste Google Drive link" />
+        </div>
+        <div class="full">
+          <label for="patientNarrative">Patient Narrative / Medical Summary</label>
+          <textarea id="patientNarrative" name="patientNarrative" placeholder="Enter clinical narrative or summary if no report is uploaded."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Patient Location</h2>
+      <div class="grid">
+        <div>
+          <label for="patientLocationType">Patient Location Type <span style="color:#dc2626">*</span></label>
+          <select id="patientLocationType" name="patientLocationType" required>
+            <option value="">Select</option><option>Hospital</option><option>Home</option><option>Clinic</option><option>Nursing Facility</option><option>Airport</option><option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="originatingCity">Originating City <span style="color:#dc2626">*</span></label>
+          <input id="originatingCity" name="originatingCity" required />
+        </div>
+        <div>
+          <label for="originatingICAO">Originating ICAO Airport Code <span style="color:#dc2626">*</span></label>
+          <input id="originatingICAO" name="originatingICAO" maxlength="4" required placeholder="Example: KBDG" />
+        </div>
+        <div class="full">
+          <label for="patientLocationDetails">Patient Location Details <span style="color:#dc2626">*</span></label>
+          <textarea id="patientLocationDetails" name="patientLocationDetails" required placeholder="Hospital name, room number, address, contact details, etc."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Flight Information</h2>
+      <div class="grid">
+        <div>
+          <label for="scheduledDeparture">Scheduled Departure Date/Time <span style="color:#dc2626">*</span></label>
+          <input id="scheduledDeparture" name="scheduledDeparture" type="datetime-local" required />
+        </div>
+        <div>
+          <label for="flexibleDeparture">Flexible Departure Time? <span style="color:#dc2626">*</span></label>
+          <select id="flexibleDeparture" name="flexibleDeparture" required>
+            <option value="">Select</option><option>Yes</option><option>No</option>
+          </select>
+        </div>
+        <div>
+          <label for="groundTransportRequired">Ground Transport Required at All Legs? <span style="color:#dc2626">*</span></label>
+          <select id="groundTransportRequired" name="groundTransportRequired" required>
+            <option value="">Select</option><option>Yes</option><option>No</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="flexibilityNotes">Flexibility Notes</label>
+          <textarea id="flexibilityNotes" name="flexibilityNotes" placeholder="Explain flexibility window, preferred times, restrictions, etc."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Medical Equipment & Travel Documents</h2>
+      <div class="grid">
+        <div class="full">
+          <label for="additionalMedicalEquipment">Additional Medical Equipment Required</label>
+          <textarea id="additionalMedicalEquipment" name="additionalMedicalEquipment" placeholder="Ventilator, oxygen, isolette, bariatric equipment, specialty medications, etc."></textarea>
+        </div>
+        <div>
+          <label for="passportLink">Passport Upload Link</label>
+          <input id="passportLink" name="passportLink" placeholder="Paste Google Drive link" />
+        </div>
+        <div>
+          <label for="visaLink">Visa Upload Link</label>
+          <input id="visaLink" name="visaLink" placeholder="Paste Google Drive link" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quote Validity</h2>
+      <div class="grid">
+        <div>
+          <label for="quoteValidity">Quote Validity Requested <span style="color:#dc2626">*</span></label>
+          <select id="quoteValidity" name="quoteValidity" required>
+            <option value="">Select</option><option>24 Hours</option><option>Other</option>
+          </select>
+        </div>
+        <div id="otherBox" style="display:none">
+          <label for="otherQuoteValidityNotes">Other Quote Validity Notes <span style="color:#dc2626">*</span></label>
+          <input id="otherQuoteValidityNotes" name="otherQuoteValidityNotes" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Signature</h2>
+      <div class="grid">
+        <div>
+          <label for="requestorSignature">Requestor Signature <span style="color:#dc2626">*</span></label>
+          <input id="requestorSignature" name="requestorSignature" required placeholder="Type full legal name" />
+        </div>
+        <div>
+          <label for="assignedCoordinator">Assigned Coordinator</label>
+          <input id="assignedCoordinator" name="assignedCoordinator" />
+        </div>
+        <div class="full">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes"></textarea>
+        </div>
+      </div>
+    </section>
 
     <div class="actions">
       <button type="button" class="reset" onclick="resetForm()">Reset</button>
-      <button id="submitBtn" type="submit" class="submit">Submit RFQ</button>
+      <button id="submitBtn" class="submit" type="submit">Submit RFQ</button>
     </div>
-
   </form>
-
 </div>
 
 <script>
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbzAtL9-TyOb4WH7FkrMSR_O4LqZIFRz04SvZ9pEELJMWwseI9THKUJVG6NyMffzbQel/exec";
-  
-function toggleOther() {
-  const val = document.getElementById("quoteValidity").value;
-  const box = document.getElementById("otherBox");
-  const notes = document.getElementById("otherQuoteValidityNotes");
+  // Replace with your deployed Apps Script web app URL
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzyqq6DDd1fm-3MqMXt0YDg3Kxaa3HXYySKBlcboQ1eLEkOZeNCb9b7_1i0BgcmDmdq/exec';
 
-  if (val === "Other") {
-    box.style.display = "block";
-    notes.required = true;
-  } else {
-    box.style.display = "none";
-    notes.required = false;
-    notes.value = "";
+  const form = document.getElementById('rfqForm');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+  const quoteValidity = document.getElementById('quoteValidity');
+  const otherBox = document.getElementById('otherBox');
+  const otherNotes = document.getElementById('otherQuoteValidityNotes');
+  const icaoInput = document.getElementById('originatingICAO');
+
+  function showStatus(message, type) {
+    statusEl.className = type;
+    statusEl.textContent = message;
+    statusEl.style.display = 'block';
   }
-}
 
-function getValue(id) {
-  const el = document.getElementById(id);
-  return el ? el.value : "";
-}
+  function clearStatus() {
+    statusEl.style.display = 'none';
+    statusEl.className = '';
+    statusEl.textContent = '';
+  }
 
-function showStatus(message, type) {
-  const status = document.getElementById("status");
-  status.className = type;
-  status.innerHTML = message;
-}
+  function toggleOther() {
+    if (quoteValidity.value === 'Other') {
+      otherBox.style.display = 'block';
+      otherNotes.required = true;
+    } else {
+      otherBox.style.display = 'none';
+      otherNotes.required = false;
+      otherNotes.value = '';
+    }
+  }
 
-function resetButton() {
-  const submitBtn = document.getElementById("submitBtn");
-  submitBtn.disabled = false;
-  submitBtn.textContent = "Submit RFQ";
-}
+  quoteValidity.addEventListener('change', toggleOther);
 
-document.getElementById("rfqForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+  function resetForm() {
+    form.reset();
+    toggleOther();
+    clearStatus();
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit RFQ';
+  }
 
-  const submitBtn = document.getElementById("submitBtn");
+  // Client-side ICAO validation helper
+  function validICAO(code) {
+    return /^[A-Za-z]{4}$/.test((code || '').trim());
+  }
 
-  showStatus("Submitting RFQ...", "working");
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearStatus();
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
+    // Basic client-side required checks
+    if (!document.getElementById('authorized').checked) {
+      showStatus('You must certify that you are authorized to request this quote.', 'error');
+      return;
+    }
 
-  const formData = {
-    caseNumber: getValue("caseNumber"),
-    authorized: document.getElementById("authorized").checked,
-    coordinatorName: getValue("coordinatorName"),
-    coordinatorEmail: getValue("coordinatorEmail"),
-    coordinatorPhone: getValue("coordinatorPhone"),
-    requestStartTime: getValue("requestStartTime"),
-    patientFullName: getValue("patientFullName"),
-    patientAge: getValue("patientAge"),
-    patientSex: getValue("patientSex"),
-    medicalReportLink: getValue("medicalReportLink"),
-    patientNarrative: getValue("patientNarrative"),
-    patientLocationType: getValue("patientLocationType"),
-    patientLocationDetails: getValue("patientLocationDetails"),
-    originatingCity: getValue("originatingCity"),
-    originatingICAO: getValue("originatingICAO"),
-    scheduledDeparture: getValue("scheduledDeparture"),
-    flexibleDeparture: getValue("flexibleDeparture"),
-    flexibilityNotes: getValue("flexibilityNotes"),
-    groundTransportRequired: getValue("groundTransportRequired"),
-    additionalMedicalEquipment: getValue("additionalMedicalEquipment"),
-    passportLink: getValue("passportLink"),
-    visaLink: getValue("visaLink"),
-    quoteValidity: getValue("quoteValidity"),
-    otherQuoteValidityNotes: getValue("otherQuoteValidityNotes"),
-    requestorSignature: getValue("requestorSignature"),
-    assignedCoordinator: getValue("assignedCoordinator"),
-    notes: getValue("notes")
-  };
+    // ICAO check
+    const icaoVal = document.getElementById('originatingICAO').value;
+    if (!validICAO(icaoVal)) {
+      showStatus('Originating ICAO Airport Code must be 4 letters (e.g., KBDG).', 'error');
+      return;
+    }
 
-  try {
-    const response = await fetch(
-      WEB_APP_URL,
-      {
-        method: "POST",
-        body: JSON.stringify(formData)
-      }
-    );
+    // If quote validity is Other, ensure notes present
+    if (quoteValidity.value === 'Other' && (!otherNotes.value || otherNotes.value.trim() === '')) {
+      showStatus('Other Quote Validity Notes are required when Quote Validity Requested is Other.', 'error');
+      return;
+    }
 
-    const text = await response.text();
+    // Build payload
+    const payload = {
+      caseNumber: document.getElementById('caseNumber').value.trim(),
+      authorized: document.getElementById('authorized').checked,
+      coordinatorName: document.getElementById('coordinatorName').value.trim(),
+      coordinatorEmail: document.getElementById('coordinatorEmail').value.trim(),
+      coordinatorPhone: document.getElementById('coordinatorPhone').value.trim(),
+      requestStartTime: document.getElementById('requestStartTime').value,
+      patientFullName: document.getElementById('patientFullName').value.trim(),
+      patientAge: document.getElementById('patientAge').value,
+      patientSex: document.getElementById('patientSex').value,
+      medicalReportLink: document.getElementById('medicalReportLink').value.trim(),
+      patientNarrative: document.getElementById('patientNarrative').value.trim(),
+      patientLocationType: document.getElementById('patientLocationType').value,
+      patientLocationDetails: document.getElementById('patientLocationDetails').value.trim(),
+      originatingCity: document.getElementById('originatingCity').value.trim(),
+      originatingICAO: document.getElementById('originatingICAO').value.trim().toUpperCase(),
+      scheduledDeparture: document.getElementById('scheduledDeparture').value,
+      flexibleDeparture: document.getElementById('flexibleDeparture').value,
+      flexibilityNotes: document.getElementById('flexibilityNotes').value.trim(),
+      groundTransportRequired: document.getElementById('groundTransportRequired').value,
+      additionalMedicalEquipment: document.getElementById('additionalMedicalEquipment').value.trim(),
+      passportLink: document.getElementById('passportLink').value.trim(),
+      visaLink: document.getElementById('visaLink').value.trim(),
+      quoteValidity: document.getElementById('quoteValidity').value,
+      otherQuoteValidityNotes: document.getElementById('otherQuoteValidityNotes').value.trim(),
+      requestorSignature: document.getElementById('requestorSignature').value.trim(),
+      assignedCoordinator: document.getElementById('assignedCoordinator').value.trim(),
+      notes: document.getElementById('notes').value.trim()
+    };
 
-    let result;
+    // Disable submit while working
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    showStatus('Submitting RFQ...', 'working');
 
     try {
-      result = JSON.parse(text);
-    } catch (parseError) {
-      result = {
-        success: true,
-        message: text || "RFQ submitted."
-      };
+      const resp = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const text = await resp.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (err) {
+        throw new Error('Unexpected server response.');
+      }
+
+      if (!result || result.success === false) {
+        throw new Error(result && result.message ? result.message : 'Submission failed.');
+      }
+
+      showStatus((result.message || 'RFQ submitted successfully.') + (result.row ? ' Row ' + result.row + '.' : ''), 'success');
+      form.reset();
+      toggleOther();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      showStatus('ERROR: ' + (err.message || 'Submission failed.'), 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit RFQ';
     }
+  });
 
-    if (result.success === false) {
-      throw new Error(result.message || "Submission failed.");
-    }
-
-    showStatus(
-      (result.message || "RFQ submitted successfully.") +
-      (result.row ? " Row " + result.row + "." : ""),
-      "success"
-    );
-
-    document.getElementById("rfqForm").reset();
-    toggleOther();
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  } catch (error) {
-    showStatus("ERROR: " + error.message, "error");
-  }
-
-  resetButton();
-});
-
-function resetForm() {
-  document.getElementById("rfqForm").reset();
+  // Initialize
   toggleOther();
-
-  const status = document.getElementById("status");
-  status.className = "";
-  status.innerHTML = "";
-}
-
-toggleOther();
 </script>
-
 </body>
 </html>
