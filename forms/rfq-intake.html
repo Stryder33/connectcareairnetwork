@@ -1,4 +1,3 @@
-<!-- index.html - paste into a static host or open locally; update WEB_APP_URL -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Medical Transport RFQ Intake</title>
 <style>
-  /* Minimal styles (kept small for clarity) */
   body{font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#111;margin:0;padding:20px}
   .container{max-width:1000px;margin:0 auto}
   .card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06);margin-bottom:16px}
@@ -17,6 +15,7 @@
   .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
   button{padding:10px 16px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
   .submit{background:#2563eb;color:#fff}
+  .submit[disabled]{opacity:.5;cursor:not-allowed}
   .reset{background:#e5e7eb}
   #status{display:none;padding:12px;border-radius:8px;margin-bottom:12px;font-weight:700}
   .success{display:block;background:#dcfce7;color:#166534;border:1px solid #86efac}
@@ -35,6 +34,7 @@
   <form id="rfqForm" class="card" novalidate>
     <div id="status"></div>
 
+    <!-- Authorization -->
     <section>
       <h2>Authorization</h2>
       <div class="grid">
@@ -48,6 +48,7 @@
       </div>
     </section>
 
+    <!-- Coordinator -->
     <section>
       <h2>Coordinator Information</h2>
       <div class="grid">
@@ -70,6 +71,7 @@
       </div>
     </section>
 
+    <!-- Patient -->
     <section>
       <h2>Patient Information</h2>
       <div class="grid">
@@ -98,6 +100,7 @@
       </div>
     </section>
 
+    <!-- Location -->
     <section>
       <h2>Patient Location</h2>
       <div class="grid">
@@ -122,6 +125,7 @@
       </div>
     </section>
 
+    <!-- Flight -->
     <section>
       <h2>Flight Information</h2>
       <div class="grid">
@@ -148,6 +152,7 @@
       </div>
     </section>
 
+    <!-- Equipment & Docs -->
     <section>
       <h2>Medical Equipment & Travel Documents</h2>
       <div class="grid">
@@ -166,6 +171,7 @@
       </div>
     </section>
 
+    <!-- Quote Validity -->
     <section>
       <h2>Quote Validity</h2>
       <div class="grid">
@@ -182,6 +188,7 @@
       </div>
     </section>
 
+    <!-- Signature -->
     <section>
       <h2>Signature</h2>
       <div class="grid">
@@ -208,8 +215,8 @@
 </div>
 
 <script>
-  // Replace with your deployed Apps Script web app URL
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzyqq6DDd1fm-3MqMXt0YDg3Kxaa3HXYySKBlcboQ1eLEkOZeNCb9b7_1i0BgcmDmdq/exec';
+  // Use the web app URL you provided
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwJnBTnOVZLaVupdQ62qYqIKsQbxUcPGOD0bPXhBzc/dev';
 
   const form = document.getElementById('rfqForm');
   const statusEl = document.getElementById('status');
@@ -217,7 +224,6 @@
   const quoteValidity = document.getElementById('quoteValidity');
   const otherBox = document.getElementById('otherBox');
   const otherNotes = document.getElementById('otherQuoteValidityNotes');
-  const icaoInput = document.getElementById('originatingICAO');
 
   function showStatus(message, type) {
     statusEl.className = type;
@@ -252,7 +258,6 @@
     submitBtn.textContent = 'Submit RFQ';
   }
 
-  // Client-side ICAO validation helper
   function validICAO(code) {
     return /^[A-Za-z]{4}$/.test((code || '').trim());
   }
@@ -261,20 +266,18 @@
     e.preventDefault();
     clearStatus();
 
-    // Basic client-side required checks
+    // Client-side checks
     if (!document.getElementById('authorized').checked) {
       showStatus('You must certify that you are authorized to request this quote.', 'error');
       return;
     }
 
-    // ICAO check
     const icaoVal = document.getElementById('originatingICAO').value;
     if (!validICAO(icaoVal)) {
       showStatus('Originating ICAO Airport Code must be 4 letters (e.g., KBDG).', 'error');
       return;
     }
 
-    // If quote validity is Other, ensure notes present
     if (quoteValidity.value === 'Other' && (!otherNotes.value || otherNotes.value.trim() === '')) {
       showStatus('Other Quote Validity Notes are required when Quote Validity Requested is Other.', 'error');
       return;
@@ -311,7 +314,7 @@
       notes: document.getElementById('notes').value.trim()
     };
 
-    // Disable submit while working
+    // Disable and grey out submit button
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
     showStatus('Submitting RFQ...', 'working');
